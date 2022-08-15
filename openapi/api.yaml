@@ -1,0 +1,109 @@
+openapi: 3.0.2
+info:
+  title: People API
+  version: 1.0.0
+
+servers:
+  - url: 'http://localhost:8080/api/v1'
+
+paths:
+  /people:
+    get:
+      summary: Return a list of people
+      operationId: getPeople
+      tags:
+        - 'people'
+      responses:
+        '200':
+          description: List of all people
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Person'
+    post:
+      description: Create a new person
+      operationId: createPerson
+      tags:
+        - 'people'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+  /people/{personId}:
+    get:
+      summary: Return a specific person
+      operationId: getPerson
+      tags:
+        - 'people'
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Name for a specific person
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+    put:
+      description: Update an existing new person
+      operationId: updatePerson
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+    delete:
+      description: Remove an existing new person
+      operationId: removePerson
+      tags:
+        - 'people'
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Success
+
+components:
+  parameters:
+    id:
+      name: personId
+      in: path
+      required: true
+      description: The id of the person to retrieve
+      schema:
+        type: string
+  schemas:
+    Person:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: string
+          example: "1"
+        name:
+          type: string
+          example: John Doe
+
+tags:
+  - name: people
+    description: Relating to people who have names
